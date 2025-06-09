@@ -1,12 +1,14 @@
 "use client";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import { Input } from "./ui/input";
 import { Search, Menu, X } from "lucide-react";
+import Link from "next/link";
 
 const navLinks = [
-  { label: "Home", href: "#" },
+  { label: "Home", href: "/dashboard" },
   { label: "Pantry", href: "#" },
   { label: "Meal Planner", href: "#" },
   { label: "Recipes", href: "#" },
@@ -16,6 +18,7 @@ const navLinks = [
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const pathname = usePathname();
 
   return (
     <header className="border-b border-solid border-b-[#f2f4f1] px-4 py-3 md:px-10 flex items-center justify-between relative bg-white transition-shadow duration-300 shadow-none hover:shadow-md">
@@ -32,7 +35,6 @@ const Navbar = () => {
           PantryChef
         </h2>
       </div>
-
       {/* Hamburger menu for mobile */}
       <button
         className="md:hidden ml-auto transition-transform duration-200 active:scale-90"
@@ -44,27 +46,43 @@ const Navbar = () => {
 
       {/* Desktop nav */}
       <nav className="hidden md:flex items-center gap-9 ml-8">
-        {navLinks.map((link) => (
-          <a
-            key={link.label}
-            className="relative text-[#131612] text-sm font-medium leading-normal group transition-colors duration-200 px-1"
-            href={link.href}
-          >
-            <span className="relative z-10 group-hover:text-green-700 transition-colors duration-300">
-              {link.label}
-            </span>
-            {/* Improved underline hover effect */}
-            <span
-              className="pointer-events-none absolute left-0 -bottom-1 h-0.5 w-full bg-gradient-to-r from-green-400 to-lime-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left rounded-full"
-              aria-hidden="true"
-            />
-            {/* Subtle background highlight on hover */}
-            <span
-              className="pointer-events-none absolute inset-0 rounded-md bg-green-100 opacity-0 group-hover:opacity-60 transition-opacity duration-300"
-              aria-hidden="true"
-            />
-          </a>
-        ))}
+        {navLinks.map((link) => {
+          const isActive =
+            link.href !== "#" &&
+            (pathname === link.href ||
+              (link.href !== "/" && pathname.startsWith(link.href)));
+          return (
+            <Link
+              key={link.label}
+              className={`relative text-[#131612] text-sm font-medium leading-normal group transition-colors duration-200 px-1 ${
+                isActive ? "group-hover:text-green-700 text-green-700" : ""
+              }`}
+              href={link.href}
+            >
+              <span
+                className={`relative z-10 transition-colors duration-300 ${
+                  isActive ? "text-green-700" : "group-hover:text-green-700"
+                }`}
+              >
+                {link.label}
+              </span>
+              {/* Improved underline hover effect */}
+              <span
+                className={`pointer-events-none absolute left-0 -bottom-1 h-0.5 w-full bg-gradient-to-r from-green-400 to-lime-400 rounded-full origin-left transition-transform duration-400 ${
+                  isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                }`}
+                aria-hidden="true"
+              />
+              {/* Subtle background highlight on hover */}
+              <span
+                className={`pointer-events-none absolute inset-0 rounded-md bg-green-100 transition-opacity duration-300 ${
+                  isActive ? "opacity-60" : "opacity-0 group-hover:opacity-60"
+                }`}
+                aria-hidden="true"
+              />
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Search and user button */}
@@ -95,7 +113,6 @@ const Navbar = () => {
         onClick={() => setMenuOpen(false)}
         aria-hidden={!menuOpen}
       />
-      {/* Mobile menu */}
       <aside
         className={`fixed top-0 left-0 w-[85vw] max-w-xs h-full bg-white shadow-2xl z-50 transform transition-transform duration-400 md:hidden flex flex-col ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
@@ -122,16 +139,26 @@ const Navbar = () => {
           </button>
         </div>
         <nav className="flex flex-col gap-2 p-6 pt-4">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              className="relative text-[#131612] text-base font-medium rounded-md px-3 py-2 transition-all duration-200 hover:bg-green-50 hover:text-green-700 active:bg-green-100"
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const isActive =
+              link.href !== "#" &&
+              (pathname === link.href ||
+                (link.href !== "/" && pathname.startsWith(link.href)));
+            return (
+              <Link
+                key={link.label}
+                className={`relative text-[#131612] text-base font-medium rounded-md px-3 py-2 transition-all duration-200 active:bg-green-100 ${
+                  isActive
+                    ? "bg-green-50 text-green-700"
+                    : "hover:bg-green-50 hover:text-green-700"
+                }`}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
           <div className="flex items-center gap-2 mt-6">
             <label className="flex flex-col min-w-40 !h-10 max-w-64 flex-1">
               <div className="flex w-full flex-1 items-stretch rounded-xl h-full shadow-inner focus-within:shadow-lg transition-shadow duration-200">
