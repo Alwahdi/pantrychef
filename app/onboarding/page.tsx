@@ -64,11 +64,46 @@ export default function OnboardingComponent() {
     visible: { opacity: 1, scale: 1 },
   };
 
+  // Progress calculation
+  const steps = [
+    Boolean(selectedDiet),
+    Boolean(selectedAllergy),
+    Boolean(selectedCuisine),
+  ];
+  const completedSteps = steps.filter(Boolean).length;
+  const progress = (completedSteps / steps.length) * 100;
+
   return (
     <div
       className="relative flex min-h-screen flex-col bg-white overflow-x-hidden"
       style={{ fontFamily: 'Manrope, "Noto Sans", sans-serif' }}
     >
+      {/* Progress Bar */}
+      <div className="w-full px-0 pt-6 pb-2 flex flex-col items-center">
+        <div className="w-full max-w-[512px] px-4">
+          <div className="flex justify-between mb-1">
+            <span className="text-xs font-semibold text-[#131712]">
+              Step {completedSteps + 1 > 3 ? 3 : completedSteps + 1} of 3
+            </span>
+            <span className="text-xs font-semibold text-[#50d22c]">
+              {Math.round(progress)}%
+            </span>
+          </div>
+          <div className="w-full h-3 bg-[#e6f5e1] rounded-full overflow-hidden">
+            <motion.div
+              className="h-3 bg-[#50d22c] rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ type: "spring", stiffness: 120, damping: 20 }}
+            />
+          </div>
+          <div className="flex justify-between mt-1 text-xs text-[#7a7a7a]">
+            <span>Diet</span>
+            <span>Allergy</span>
+            <span>Cuisine</span>
+          </div>
+        </div>
+      </div>
       <div className="flex flex-1 justify-center py-5 px-4">
         <div className="flex flex-col w-full max-w-[512px] py-5">
           <h2 className="text-[#131712] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">
@@ -201,7 +236,12 @@ export default function OnboardingComponent() {
             <div className="flex px-4 py-3 justify-center">
               <button
                 type="submit"
-                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#50d22c] text-[#131712] text-sm font-bold leading-normal tracking-[0.015em]"
+                className={`flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 text-sm font-bold leading-normal tracking-[0.015em] ${
+                  completedSteps === 3
+                    ? "bg-[#50d22c] text-[#131712]"
+                    : "bg-[#e6f5e1] text-[#b0b0b0] cursor-not-allowed"
+                }`}
+                disabled={completedSteps !== 3}
               >
                 <span className="truncate">Save Preferences</span>
               </button>

@@ -1,20 +1,25 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import Link from "next/link";
-
-const BANNER_IMAGE =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuCOGzAd6jkIoLREEnRwnwSYKqAhakUkEOjgsLcu0zyCwrCWyXxNZ_bVhgz0sbhW9NUsSJNsQLNnnD4vm5TeJhujE0x_y76ZmHuaRfel1TMaAhx1uOq3uXyskfQbeIojwzpSk7vdkq8UqRelo3x1TMn3dN6viGUCgJdEDrLusB4xkePs84lh4lPKkM7WIBhpAcdVzXtS8yNvpurMugyYnPK7i2yLpjRmo_mrKoTV8h0U-AZii7EbOE8kHiFQ4AC-q_03aJkWfnvS3e4";
 
 export default function Page() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-[#f8fff4] to-[#e6f4ea] flex flex-col">
       <section className="flex flex-1 items-center justify-center px-4 py-8 animate-fadeIn">
         <div className="w-full max-w-3xl mx-auto flex flex-col items-center">
-          <div
+          {/* <div
             className="w-full h-48 sm:h-56 md:h-64 rounded-xl bg-cover bg-center bg-no-repeat mb-8 shadow-lg animate-zoomIn"
             style={{ backgroundImage: `url("${BANNER_IMAGE}")` }}
             role="img"
             aria-label="PantryChef Banner"
+          /> */}
+          <Image
+            src="/images/logo.svg"
+            alt="PantryChef Logo"
+            width={96}
+            height={96}
+            className="mb-6 animate-zoomIn"
           />
           <h1 className="text-[#131612] text-3xl sm:text-4xl font-extrabold text-center mb-4 tracking-tight drop-shadow">
             Welcome to <span className="text-[#8cd279]">PantryChef</span>
