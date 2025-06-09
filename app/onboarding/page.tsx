@@ -75,7 +75,7 @@ export default function OnboardingComponent() {
             Tell us about your preferences
           </h2>
           <p className="text-[#131712] text-base font-normal leading-normal pb-3 pt-1 px-4 text-center">
-            This will help us suggest recipes that you'll love.
+            This will help us suggest recipes that you will love.
           </p>
           <form action={handleSubmit}>
             {/* Dietary Preferences */}
